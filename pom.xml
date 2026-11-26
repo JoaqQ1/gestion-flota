@@ -29,6 +29,31 @@
             <artifactId>flatlaf-extras</artifactId>
             <version>${flatlaf.version}</version>
         </dependency>
+        <!-- Fuente Inter incluida: evita depender de la fuente del sistema
+             (en macOS la negrita de San Francisco pierde letras al dibujarse en Java) -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-fonts-inter</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <!-- Selector de fechas con calendario -->
+        <dependency>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.1</version>
+        </dependency>
+        <!-- Exportar a Excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        <!-- Exportar a PDF -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>2.0.3</version>
+        </dependency>
         <!-- Base de datos local embebida -->
         <dependency>
             <groupId>org.xerial</groupId>
@@ -44,6 +69,8 @@
     </dependencies>
 
     <build>
+        <!-- Nombre fijo del jar ejecutable: target/gestion-flota.jar -->
+        <finalName>gestion-flota</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

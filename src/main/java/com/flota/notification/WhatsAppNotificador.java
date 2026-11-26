@@ -1,6 +1,6 @@
 package com.flota.notification;
 
-import com.flota.model.Documento;
+import com.flota.documento.model.Documento;
 
 import java.util.List;
 

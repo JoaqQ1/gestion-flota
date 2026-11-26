@@ -18,3 +18,7 @@ Thumbs.db
 *.db
 documentos/
 .env
+dependency-reduced-pom.xml
+
+# Ejecutable generado por los scripts de empaquetado
+dist/
