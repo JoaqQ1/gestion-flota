@@ -1,0 +1,57 @@
+# Arma la aplicacion para Windows (con Java incluido) y la publica como descarga.
+#  - Al subir una etiqueta vX.Y.Z (por ejemplo v1.0.1) crea un Release con GestionFlota-windows.zip.
+#  - Tambien se puede correr a mano desde la pestaña Actions ("Run workflow"); en ese caso
+#    el zip queda como artefacto de la ejecucion, sin crear Release.
+name: Release Windows
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Compilar, probar y empaquetar (mismo script que se usa a mano)
+        shell: cmd
+        run: call empaquetar-windows.bat
+
+      - name: Comprimir la aplicacion
+        shell: pwsh
+        run: Compress-Archive -Path dist\GestionFlota -DestinationPath GestionFlota-windows.zip
+
+      - name: Guardar el zip como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: GestionFlota-windows
+          path: GestionFlota-windows.zip
+
+      - name: Publicar el Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: GestionFlota-windows.zip
+          body: |
+            ## Cómo instalar en Windows
+            1. Descargá **GestionFlota-windows.zip** (abajo, en *Assets*).
+            2. Descomprimilo (clic derecho → *Extraer todo…*), por ejemplo en `C:\GestionFlota-app`.
+            3. Abrí la carpeta `GestionFlota` y hacé doble clic en **GestionFlota.exe**.
+               Para tenerlo a mano: clic derecho en el .exe → *Enviar a* → *Escritorio (crear acceso directo)*.
+
+            No hace falta instalar Java: viene incluido.
+            Para actualizar, reemplazá la carpeta por la nueva versión. Los datos no se pierden (están en la carpeta *GestionFlota* del usuario).

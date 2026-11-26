@@ -38,39 +38,32 @@ Por defecto en `~/GestionFlota`. Se puede cambiar desde **Configuración → Cam
 Para pruebas se puede forzar otra carpeta con `-Dflota.datos=/ruta/a/carpeta` (tiene prioridad sobre la elegida).
 
 ## Instalar en la computadora del trabajo
-Se genera una aplicación que **trae su propio Java**: los usuarios solo hacen doble clic, no instalan nada.
+La aplicación **trae su propio Java**: los usuarios solo hacen doble clic, no instalan nada.
 
-**Requisitos solo para quien empaqueta** (una vez, en esa computadora):
-- [Git](https://git-scm.com/downloads)
-- JDK 21, por ejemplo [Eclipse Temurin 21](https://adoptium.net/temurin/releases/?version=21). En el instalador de Windows marcar *Set JAVA_HOME*.
-- No hace falta instalar Maven: el proyecto trae `mvnw`, que lo descarga solo.
+### Windows (recomendado: descargar ya armada)
+GitHub arma la aplicación automáticamente en cada versión publicada.
+1. Entrar a **[Releases](https://github.com/JoaqQ1/gestion-flota/releases/latest)** y descargar **GestionFlota-windows.zip** (en *Assets*).
+2. Descomprimir (clic derecho → *Extraer todo…*), por ejemplo en `C:\GestionFlota-app`.
+3. Abrir la carpeta `GestionFlota` y hacer doble clic en **GestionFlota.exe**.
+4. Acceso directo: clic derecho en el .exe → *Enviar a* → *Escritorio (crear acceso directo)*.
 
-### Windows
-1. Clonar el repositorio (es privado: pide iniciar sesión en GitHub):
-   ```
-   git clone https://github.com/JoaqQ1/gestion-flota.git
-   cd gestion-flota
-   ```
-2. Empaquetar:
-   ```
-   empaquetar-windows.bat
-   ```
-3. La aplicación queda en `dist\GestionFlota\GestionFlota.exe`. Crear un acceso directo en el Escritorio (clic derecho → *Enviar a* → *Escritorio*).
+> Si Windows muestra "Windows protegió su PC", tocar *Más información* → *Ejecutar de todas formas* (la app no está firmada digitalmente).
 
-### macOS
+### Publicar una versión nueva (desarrollador)
 ```
-git clone https://github.com/JoaqQ1/gestion-flota.git
-cd gestion-flota
-./empaquetar-mac.sh
+git tag v1.0.1
+git push origin v1.0.1
 ```
-Queda `dist/GestionFlota.app`; se puede arrastrar a *Aplicaciones*.
+GitHub Actions compila, corre los tests, empaqueta y publica el zip en Releases (tarda unos minutos).
+También se puede correr a mano desde la pestaña *Actions → Release Windows → Run workflow* (el zip queda como artefacto).
+
+### Empaquetar a mano
+Requisitos: [Git](https://git-scm.com/downloads) y JDK 21 (por ejemplo [Eclipse Temurin 21](https://adoptium.net/temurin/releases/?version=21); en Windows marcar *Set JAVA_HOME*). Maven no hace falta: el proyecto trae `mvnw`.
+- Windows: `empaquetar-windows.bat` → `dist\GestionFlota\GestionFlota.exe`
+- macOS: `./empaquetar-mac.sh` → `dist/GestionFlota.app` (se puede arrastrar a *Aplicaciones*)
 
 ### Actualizar a una versión nueva
-Cerrar la aplicación y en la carpeta del proyecto:
-```
-git pull
-empaquetar-windows.bat
-```
+Cerrar la aplicación, descargar el zip nuevo de Releases y reemplazar la carpeta `GestionFlota` del programa.
 Los datos **no se pierden**: están en la carpeta de datos (por defecto `C:\Users\<usuario>\GestionFlota`), separada del programa.
 
 ### Datos y varios usuarios

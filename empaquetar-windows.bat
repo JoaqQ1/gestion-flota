@@ -9,6 +9,8 @@ setlocal
 cd /d "%~dp0"
 
 set "JPACKAGE=jpackage"
+set "VERSION=1.0.0"
+if defined GITHUB_REF_NAME if "%GITHUB_REF_NAME:~0,1%"=="v" set "VERSION=%GITHUB_REF_NAME:~1%"
 if defined JAVA_HOME set "JPACKAGE=%JAVA_HOME%\bin\jpackage"
 
 echo.
@@ -26,7 +28,7 @@ if errorlevel 1 goto error
 echo [3/3] Armando el ejecutable (puede tardar un minuto)...
 "%JPACKAGE%" --type app-image --name GestionFlota ^
   --input target\jpackage-input --main-jar gestion-flota.jar --main-class com.flota.App ^
-  --dest dist --app-version 1.0.0 --vendor "Gestion de Flota" ^
+  --dest dist --app-version %VERSION% --vendor "Gestion de Flota" ^
   --java-options "-Dfile.encoding=UTF-8"
 if errorlevel 1 goto error
 
